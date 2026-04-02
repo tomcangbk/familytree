@@ -1,3 +1,15 @@
+function createMemberDiv(person) {
+  const div = document.createElement('div');
+  div.className = 'member';
+  if (person.avatar) {
+    const img = document.createElement('img');
+    img.src = person.avatar;
+    div.appendChild(img);
+  }
+  div.appendChild(document.createTextNode(person.name));
+  return div;
+}
+
 function renderFamily(member) {
   const container = document.createElement('div');
 
@@ -8,7 +20,6 @@ function renderFamily(member) {
   const husbandDiv = createMemberDiv(member);
   familyDiv.appendChild(husbandDiv);
 
-  // connector line between spouses
   if (member.spouse) {
     const connector = document.createElement('div');
     connector.className = 'connector';
@@ -32,16 +43,6 @@ function renderFamily(member) {
         if (child.spouse) {
           li.appendChild(createMemberDiv(child.spouse));
         }
-        if (child.children && child.children.length > 0) {
-          const subUl = document.createElement('ul');
-          subUl.className = 'children';
-          child.children.forEach(grandchild => {
-            const subLi = document.createElement('li');
-            subLi.appendChild(createMemberDiv(grandchild));
-            subUl.appendChild(subLi);
-          });
-          li.appendChild(subUl);
-        }
       } else {
         li.appendChild(renderFamily(child));
       }
@@ -53,3 +54,11 @@ function renderFamily(member) {
 
   return container;
 }
+
+async function loadTree() {
+  const response = await fetch('family.json');
+  const data = await response.json();
+  const treeDiv = document.getElementById('tree');
+  treeDiv.appendChild(renderFamily(data));
+}
+loadTree();
