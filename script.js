@@ -58,6 +58,7 @@ function renderFamily(member) {
 async function loadTree() {
   const response = await fetch('family.json');
   const data = await response.json();
+  console.log("Loaded family data:", data);
   const treeDiv = document.getElementById('tree');
   treeDiv.appendChild(renderFamily(data));
 }
