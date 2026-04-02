@@ -1,173 +1,34 @@
 {
-  "name": "Tổ A",
+  "name": "Ông A",
   "gender": "male",
-  "avatar": "images/to_a.jpg",
+  "avatar": "images/a.jpg",
   "spouse": {
-    "name": "Tổ B",
+    "name": "Bà B",
     "gender": "female",
-    "avatar": "images/to_b.jpg"
+    "avatar": "images/b.jpg"
   },
   "children": [
     {
-      "name": "Con1",
+      "name": "Con Trai 1",
       "gender": "male",
       "avatar": "images/con1.jpg",
       "spouse": {
-        "name": "Vợ1",
+        "name": "Vợ 1",
         "gender": "female",
         "avatar": "images/vo1.jpg"
       },
-      "children": [
-        {
-          "name": "Chau1",
-          "gender": "male",
-          "avatar": "images/chau1.jpg",
-          "spouse": {
-            "name": "VoChau1",
-            "gender": "female",
-            "avatar": "images/vochau1.jpg"
-          },
-          "children": [
-            {
-              "name": "Chat1",
-              "gender": "female",
-              "avatar": "images/chat1.jpg",
-              "spouse": {
-                "name": "ChongChat1",
-                "gender": "male",
-                "avatar": "images/chongchat1.jpg"
-              },
-              "children": [
-                {
-                  "name": "Chut1",
-                  "gender": "male",
-                  "avatar": "images/chut1.jpg",
-                  "spouse": {
-                    "name": "VoChut1",
-                    "gender": "female",
-                    "avatar": "images/vochut1.jpg"
-                  },
-                  "children": [
-                    {
-                      "name": "Huyet1",
-                      "gender": "male",
-                      "avatar": "images/huyet1.jpg",
-                      "spouse": {
-                        "name": "VoHuyet1",
-                        "gender": "female",
-                        "avatar": "images/vohuyet1.jpg"
-                      },
-                      "children": []
-                    },
-                    {
-                      "name": "Huyet2",
-                      "gender": "female",
-                      "avatar": "images/huyet2.jpg",
-                      "spouse": {
-                        "name": "ChongHuyet2",
-                        "gender": "male",
-                        "avatar": "images/chonghuyet2.jpg"
-                      },
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "Chat2",
-              "gender": "male",
-              "avatar": "images/chat2.jpg",
-              "spouse": {
-                "name": "VoChat2",
-                "gender": "female",
-                "avatar": "images/vochat2.jpg"
-              },
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "Chau2",
-          "gender": "female",
-          "avatar": "images/chau2.jpg",
-          "spouse": {
-            "name": "ChongChau2",
-            "gender": "male",
-            "avatar": "images/chongchau2.jpg"
-          },
-          "children": [
-            {
-              "name": "Chat3",
-              "gender": "male",
-              "avatar": "images/chat3.jpg",
-              "spouse": {
-                "name": "VoChat3",
-                "gender": "female",
-                "avatar": "images/vochat3.jpg"
-              },
-              "children": []
-            }
-          ]
-        }
-      ]
+      "children": []
     },
     {
-      "name": "Con2",
+      "name": "Con Gái 2",
       "gender": "female",
       "avatar": "images/con2.jpg",
       "spouse": {
-        "name": "Chong2",
+        "name": "Chồng 2",
         "gender": "male",
         "avatar": "images/chong2.jpg"
       },
-      "children": [
-        {
-          "name": "Chau3",
-          "gender": "male",
-          "avatar": "images/chau3.jpg",
-          "spouse": {
-            "name": "VoChau3",
-            "gender": "female",
-            "avatar": "images/vochau3.jpg"
-          },
-          "children": []
-        }
-      ]
-    },
-    {
-      "name": "Con3",
-      "gender": "male",
-      "avatar": "images/con3.jpg",
-      "spouse": {
-        "name": "Vo3",
-        "gender": "female",
-        "avatar": "images/vo3.jpg"
-      },
-      "children": [
-        {
-          "name": "Chau4",
-          "gender": "male",
-          "avatar": "images/chau4.jpg",
-          "spouse": {
-            "name": "VoChau4",
-            "gender": "female",
-            "avatar": "images/vochau4.jpg"
-          },
-          "children": []
-        },
-        {
-          "name": "Chau5",
-          "gender": "female",
-          "avatar": "images/chau5.jpg",
-          "spouse": {
-            "name": "ChongChau5",
-            "gender": "male",
-            "avatar": "images/chongchau5.jpg"
-          },
-          "children": []
-        }
-      ]
+      "children": []
     }
   ]
 }
