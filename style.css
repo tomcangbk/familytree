@@ -1,9 +1,21 @@
 .family-unit {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 20px;
+  margin: 20px;
+}
+
+.family-unit .member {
+  margin: 0 10px;
+}
+
+.family-unit .connector {
+  width: 40px;
+  height: 2px;
+  background: #ccc;
+  margin: 0 5px;
+  align-self: center;
 }
 
 .family-unit::after {
@@ -14,10 +26,6 @@
   width: 2px;
   height: 20px;
   background: #ccc;
-}
-
-.family-unit .member {
-  margin: 0 10px;
 }
 
 .children {
