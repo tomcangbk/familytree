@@ -1,86 +1,73 @@
-async function loadTree() {
-  const response = await fetch('family.json');
-  const data = await response.json();
-  const treeDiv = document.getElementById('tree');
-  treeDiv.appendChild(renderMember(data));
-}
+function renderFamily(member) {
+  const container = document.createElement('div');
 
-function renderMember(member) {
-  const li = document.createElement('li');
-  const div = document.createElement('div');
-  div.className = 'member';
+  // family unit
+  const familyDiv = document.createElement('div');
+  familyDiv.className = 'family-unit';
 
-  if (member.avatar) {
-    const img = document.createElement('img');
-    img.src = member.avatar;
-    div.appendChild(img);
-  }
-  div.appendChild(document.createTextNode(member.name));
+  const husbandDiv = createMemberDiv(member);
+  familyDiv.appendChild(husbandDiv);
 
-  li.appendChild(div);
-
-  // spouse
   if (member.spouse) {
-    const spouseDiv = document.createElement('div');
-    spouseDiv.className = 'member';
-    if (member.spouse.avatar) {
-      const img = document.createElement('img');
-      img.src = member.spouse.avatar;
-      spouseDiv.appendChild(img);
-    }
-    spouseDiv.appendChild(document.createTextNode(member.spouse.name));
-    li.appendChild(spouseDiv);
+    const spouseDiv = createMemberDiv(member.spouse);
+    familyDiv.appendChild(spouseDiv);
   }
+
+  container.appendChild(familyDiv);
 
   // children
   if (member.children && member.children.length > 0) {
     const ul = document.createElement('ul');
+    ul.className = 'children';
+
     member.children.forEach(child => {
-      // nếu con là nữ thì chỉ hiển thị spouse và children, không lặp sâu
+      const li = document.createElement('li');
       if (child.gender === 'female') {
-        const childLi = document.createElement('li');
-        const childDiv = document.createElement('div');
-        childDiv.className = 'member';
-        if (child.avatar) {
-          const img = document.createElement('img');
-          img.src = child.avatar;
-          childDiv.appendChild(img);
-        }
-        childDiv.appendChild(document.createTextNode(child.name));
-        childLi.appendChild(childDiv);
-
+        // render female branch (stop deeper recursion)
+        const childDiv = createMemberDiv(child);
+        li.appendChild(childDiv);
         if (child.spouse) {
-          const spouseDiv = document.createElement('div');
-          spouseDiv.className = 'member';
-          if (child.spouse.avatar) {
-            const img = document.createElement('img');
-            img.src = child.spouse.avatar;
-            spouseDiv.appendChild(img);
-          }
-          spouseDiv.appendChild(document.createTextNode(child.spouse.name));
-          childLi.appendChild(spouseDiv);
+          li.appendChild(createMemberDiv(child.spouse));
         }
-
-        // hiển thị children nhưng không lặp sâu
         if (child.children && child.children.length > 0) {
           const subUl = document.createElement('ul');
+          subUl.className = 'children';
           child.children.forEach(grandchild => {
-            subUl.appendChild(renderMember(grandchild));
+            const subLi = document.createElement('li');
+            subLi.appendChild(createMemberDiv(grandchild));
+            subUl.appendChild(subLi);
           });
-          childLi.appendChild(subUl);
+          li.appendChild(subUl);
         }
-
-        ul.appendChild(childLi);
       } else {
-        ul.appendChild(renderMember(child));
+        // male branch → recurse
+        li.appendChild(renderFamily(child));
       }
+      ul.appendChild(li);
     });
-    li.appendChild(ul);
+
+    container.appendChild(ul);
   }
 
-  const ulWrapper = document.createElement('ul');
-  ulWrapper.appendChild(li);
-  return ulWrapper;
+  return container;
 }
 
+function createMemberDiv(person) {
+  const div = document.createElement('div');
+  div.className = 'member';
+  if (person.avatar) {
+    const img = document.createElement('img');
+    img.src = person.avatar;
+    div.appendChild(img);
+  }
+  div.appendChild(document.createTextNode(person.name));
+  return div;
+}
+
+async function loadTree() {
+  const response = await fetch('family.json');
+  const data = await response.json();
+  const treeDiv = document.getElementById('tree');
+  treeDiv.appendChild(renderFamily(data));
+}
 loadTree();
