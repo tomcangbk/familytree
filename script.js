@@ -8,7 +8,12 @@ function renderFamily(member) {
   const husbandDiv = createMemberDiv(member);
   familyDiv.appendChild(husbandDiv);
 
+  // connector line between spouses
   if (member.spouse) {
+    const connector = document.createElement('div');
+    connector.className = 'connector';
+    familyDiv.appendChild(connector);
+
     const spouseDiv = createMemberDiv(member.spouse);
     familyDiv.appendChild(spouseDiv);
   }
@@ -23,9 +28,7 @@ function renderFamily(member) {
     member.children.forEach(child => {
       const li = document.createElement('li');
       if (child.gender === 'female') {
-        // render female branch (stop deeper recursion)
-        const childDiv = createMemberDiv(child);
-        li.appendChild(childDiv);
+        li.appendChild(createMemberDiv(child));
         if (child.spouse) {
           li.appendChild(createMemberDiv(child.spouse));
         }
@@ -40,7 +43,6 @@ function renderFamily(member) {
           li.appendChild(subUl);
         }
       } else {
-        // male branch → recurse
         li.appendChild(renderFamily(child));
       }
       ul.appendChild(li);
@@ -51,23 +53,3 @@ function renderFamily(member) {
 
   return container;
 }
-
-function createMemberDiv(person) {
-  const div = document.createElement('div');
-  div.className = 'member';
-  if (person.avatar) {
-    const img = document.createElement('img');
-    img.src = person.avatar;
-    div.appendChild(img);
-  }
-  div.appendChild(document.createTextNode(person.name));
-  return div;
-}
-
-async function loadTree() {
-  const response = await fetch('family.json');
-  const data = await response.json();
-  const treeDiv = document.getElementById('tree');
-  treeDiv.appendChild(renderFamily(data));
-}
-loadTree();
