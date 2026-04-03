@@ -1,0 +1,284 @@
+[
+  {
+    "id": "0",
+    "rels": {
+      "parents": [
+        "ed946723-bd47-4a3d-8f25-81ecc9fd07a1"
+      ],
+      "children": [
+        "77d60c68-084e-45a0-81c3-e170a16765b7",
+        "e361cffc-0080-4fbc-957b-2c8b1145c9ff"
+      ]
+    },
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Đình Trọng",
+      "birthday": "",
+      "avatar": ""
+    }
+  },
+  {
+    "id": "ed946723-bd47-4a3d-8f25-81ecc9fd07a1",
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Quốc Cơ",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "0"
+      ]
+    }
+  },
+  {
+    "id": "77d60c68-084e-45a0-81c3-e170a16765b7",
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Văn Lai",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "0"
+      ],
+      "children": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ]
+    }
+  },
+  {
+    "id": "e361cffc-0080-4fbc-957b-2c8b1145c9ff",
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Văn Ri",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "0"
+      ],
+      "children": [
+        "ec21804a-d313-410b-b640-c1bb6a51d018"
+      ]
+    }
+  },
+  {
+    "id": "94476428-263e-4dfe-ac29-dd973302e2f1",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn ",
+      "last name": "Hương",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "77d60c68-084e-45a0-81c3-e170a16765b7"
+      ],
+      "children": [
+        "1a051354-5153-4f60-97d9-bd513785f521",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
+        "8550e8c0-d73b-44f7-a64c-281aae55d92d",
+        "4bedafc7-73fd-4b57-8e5c-4c0859ab552e"
+      ],
+      "spouses": [
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "44e7c3b3-e201-4856-968c-f453fecaec2b",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khương",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "77d60c68-084e-45a0-81c3-e170a16765b7"
+      ]
+    }
+  },
+  {
+    "id": "ec21804a-d313-410b-b640-c1bb6a51d018",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Rư",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "e361cffc-0080-4fbc-957b-2c8b1145c9ff"
+      ]
+    }
+  },
+  {
+    "id": "518cfbb3-77c6-4f0d-951c-52bbea4a338d",
+    "data": {
+      "gender": "F",
+      "first name": "Nguyễn Thị",
+      "last name": "Rườm",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "1a051354-5153-4f60-97d9-bd513785f521",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
+        "8550e8c0-d73b-44f7-a64c-281aae55d92d",
+        "4bedafc7-73fd-4b57-8e5c-4c0859ab552e"
+      ],
+      "spouses": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1"
+      ]
+    }
+  },
+  {
+    "id": "1a051354-5153-4f60-97d9-bd513785f521",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Đình",
+      "last name": "Trầu",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "children": [
+        "ef6f4bee-91df-4f34-9cdf-bebce2b7a710"
+      ]
+    }
+  },
+  {
+    "id": "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Xạ",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "e7fb5991-5556-40af-a788-813e248cea07",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khức",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "42b8395b-c359-456e-aacd-d2180dbf8798",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khực",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Thông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "8550e8c0-d73b-44f7-a64c-281aae55d92d",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Nhông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d",
+        "94476428-263e-4dfe-ac29-dd973302e2f1"
+      ]
+    }
+  },
+  {
+    "id": "4bedafc7-73fd-4b57-8e5c-4c0859ab552e",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Uần",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "ef6f4bee-91df-4f34-9cdf-bebce2b7a710",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Vàng",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "1a051354-5153-4f60-97d9-bd513785f521"
+      ]
+    }
+  }
+]
