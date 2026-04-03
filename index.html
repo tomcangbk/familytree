@@ -38,7 +38,7 @@
 			padding: 8px 14px; cursor: pointer; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1);
 			font-size: 13px; transition: background 0.15s;
 		}
-		.search-dropdown-item:hover {background: gba(255,255,255,0.1)}
+		.search-dropdown-item:hover {background: rgba(255,255,255,0.1)}
 		
 		.f3 div.card { cursor: pointer; pointer-events: auto; color: #fff; position: relative; }
 		.f3 div.card-image {
@@ -180,7 +180,7 @@
 		const dropdown = document.getElementById('search-dropdown')
 		const allPeople = data.map(d => ({
 			id: d.id,
-			label: ${d.data['first name']} ${d.data['last name']}.trim()
+			label: `${d.data['first name']} ${d.data['last name']}`.trim()
 		}))
 
 		input.addEventListener('input', () => {
@@ -188,7 +188,7 @@
 			if (!q) {dropdown.classList.remove('active'); return}
 			const filtered = allPeople.filter(p => p.label.toLowerCase().includes(q))
 			dropdown.innerHTML = filtered.map(p =>
-				<div class="search-dropdown-item" data-id="${p.id}">${p.label}</div>
+				`<div class="search-dropdown-item" data-id="${p.id}">${p.label}</div>`
 			).join('')
 			dropdown.classList.toggle('active', filtered.length > 0)
 		})
