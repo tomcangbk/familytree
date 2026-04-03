@@ -157,8 +157,8 @@
 		function cardText(d) {
 			return `
 				<div class="card-text ${classList(d).join(' ')}">
-					<div>${d.data.data['first name']}</div>
-					<div>${d.data.data['last name']}</div>
+					<div>${d.data.data['first name'] || 'Không rõ'}</div>
+					<div>${d.data.data['last name']} || ''}</div>
 					<div style="font-size:11px;opacity:0.7">${d.data.data.birthday || ''}</div>
 				</div>`
 		}
