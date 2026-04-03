@@ -1,53 +1,259 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>1-basic-tree</title>
-  <link rel="shortcut icon" type="image/svg" href="/examples/logo.svg">
-  <script src="https://unpkg.com/d3@7"></script>
-  <link rel="stylesheet" href="/src/styles/family-chart.css">
-  <style> body { font-family: 'Arial', sans-serif; } </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gia Phả</title>
+	<script src="lib/d3.min.js"></script>
+	<link rel="stylesheet" href="lib/family-chart.css">
+	<script src="lib/family-chart.min.js"></script>
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; }
+
+		.header {
+			display: flex; align-items: center; justify-content: space-between;
+			padding: 10px 20px; background: rgba(0,0,0,0.4); color: #fff; z-index: 100; position: relative;
+		}
+		.header h1 { font-size: 20px; font-weight: 600; }
+		.header-actions { display: flex; gap: 8px; align-items: center; }
+		.header-actions button {
+			padding: 6px 14px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
+			background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 13px;
+			transition: background 0.2s;
+		}
+		.header-actions button:hover { background: rgba(255,255,255,0.25); }
+		.search-box {
+			padding: 6px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
+			background: rgba(255,255,255,0.1); color: #fff; font-size: 13px; width: 200px; outline: none;
+		}
+		.search-box::placeholder { color: rgba(255,255,255,0.5); }
+		.search-dropdown {
+			position: absolute; top: 100%; right: 20px; width: 250px;
+			max-height: 300px; overflow-y: auto; background: #16213e; border-radius: 0 0 8px 8px;
+			box-shadow: 0 8px 20px rgba(0,0,0,0.5); z-index: 200; display: none;
+		}
+		.search-dropdown.active { display: block; }
+		.search-dropdown-item {
+			padding: 8px 14px; cursor: pointer; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1);
+			font-size: 13px; transition: background 0.15s;
+		}
+		.search-dropdown-item:hover {background: gba(255,255,255,0.1)}
+		
+		.f3 div.card { cursor: pointer; pointer-events: auto; color: #fff; position: relative; }
+		.f3 div.card-image {
+			border-radius: 50%; padding: 4px; width: 90px; height: 90px; transition: transform 0.2s;
+		}
+		.f3 div.card:hover .card-image { transform: scale(1.1); }
+		.f3 div.card-image img {
+			width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+		}
+		.f3 div.card-image .card-label {
+			position: absolute; bottom: -10px; left: 50%; transform: translate(-50%, 50%);
+			max-width: 160%; height: 22px; text-align: center; background: rgba(0,0,0,0.6);
+			overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+			border-radius: 4px; padding: 0 8px; font-size: 12px; line-height: 22px;
+		}
+		.f3 div.card-text {
+			padding: 8px; border-radius: 6px; width: 120px; height: 70px;
+			overflow: hidden; line-height: 1.3; text-align: center; transition: transform 0.2s;
+		}
+		.f3 div.card:hover .card-text { transform: scale(1.1); }
+		.f3 div.card-female { background-color: #c48a92; }
+		.f3 div.card-male { background-color: #789fac; }
+		.f3 div.card-genderless { background-color: #999; }
+		.f3 div.card-main { transform: scale(1.15) !important; box-shadow: 0 0 25px rgba(0,0,0,0.6); }
+
+		.toast {
+			position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;
+			background: #27ae60; color: #fff; border-radius: 8px; font-size: 14px;
+			opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none;
+		}
+		.toast.show { opacity: 1; }
+	</style>
 </head>
 <body>
-<div id="FamilyChart" class="f3" style="width:100%;height:900px;margin:auto;background-color:rgb(33,33,33);color:#fff;"></div>
-<script type="module">
-import f3 from '../../src/index.js'
 
-// list of all example. delete this if not needed
-import sidebar from '../sidebar.js'
-sidebar()
+<div class="header">
+    <h1>Gia Phả Gia Đình</h1>
+    <div class="header-actions">
+		<button id="btn-export">Xuất dữ liệu</button>
+		<button id="btn-toggle-edit">Bật chỉnh sửa</button>
+		<input class="search-box" id="search-input" type="text" placeholder="Tìm thành viên...">
+		<div class="search-dropdown" id="search-dropdown"></div>
+	</div>
+</div>
 
-fetch('../data/data.json')
-  .then(res => res.json())
-  .then(data => create(data))
-  .catch(err => console.error(err))
+<div id="FamilyChart" class="f3"
+     style="width:100%;height:calc(100vh - 50px);background-color:#1a1a2e;color:#fff;">
+</div>
 
-function create(data) {
-  const cont = document.querySelector("#FamilyChart")
-  const store = f3.createStore({
-    data,
-    node_separation: 250,
-    level_separation: 150
-  })
-  const svg = f3.createSvg(cont)
-  const Card = f3.elements.CardSvg({
-    svg,
-    card_dim: {w:220,h:70,text_x:75,text_y:15,img_w:60,img_h:60,img_x:5,img_y:5},
-    card_display: [d => `${d.data["first name"]} ${d.data["last name"]}`],
-    mini_tree: true,
-    link_break: false,
-    onCardClick: (e, d) => {
-      store.updateMainId(d.data.id)
-      store.updateTree({})
-    }
-  })
+<div class="toast" id="toast"></div>
 
-  store.setOnUpdate(props => f3.view(store.getTree(), svg, Card, props || {}))
-  store.updateTree({initial: true})
-}
+<script>
+(function() {
+    let editMode = false
+    let f3Chart, f3Card, f3EditTree
 
+    fetch('./data.json')
+        .then(r => r.json())
+        .then(data => create(data))
+        .catch(err => console.error('Lỗi load data:', err))
+
+    function create(data) {
+        f3Chart = f3.createChart('#FamilyChart', data)
+            .setTransitionTime(1000)
+            .setCardXSpacing(180)
+            .setCardYSpacing(150)
+
+        f3Card = f3Chart.setCardHtml()
+            .setOnCardUpdate(cardRenderer())
+
+        f3EditTree = f3Chart.editTree()
+            .setFields(["first name", "last name", "birthday", "avatar"])
+            .setEditFirst(true)
+            .setCardClickOpen(f3Card)
+            .setNoEdit()
+			.setOnChange(() => {
+				showToast('Đã cập nhật')
+			})
+
+		f3Chart.updateTree({ initial: true })
+
+		setupSearch(data)
+		setupExport()
+		setupToggleEdit()
+	}
+
+	// --- Card renderer: ảnh tròn + tên bên dưới ---
+
+	function cardRenderer() {
+		return function(d) {
+			const card = this.querySelector('.card')
+			card.outerHTML = `
+				<div class="card" style="transform: translate(-50%, -50%);">
+					${d.data.data.avatar ? cardImage(d) : cardText(d)}
+				</div>`
+			this.addEventListener('click', e => onCardClick(e, d))
+	}
+
+		function onCardClick(e, d) {
+			if (editMode) {
+				f3EditTree.open(d.data)
+				if (f3EditTree.isAddingRelative()) return
+				if (f3EditTree.isRemovingRelative()) return
+			}
+			f3Card.onCardClickDefault(e, d)
+		}
+
+		function cardImage(d) {
+			return `
+				<div class="card-image ${classList(d).join(' ')}">
+					<img src="${d.data.data.avatar}" onerror="this.style.display='none'">
+					<div class="card-label">${d.data.data['first name']} ${d.data.data['last name']}</div>
+				</div>`
+		}
+
+		function cardText(d) {
+			return `
+				<div class="card-text ${classList(d).join(' ')}">
+					<div>${d.data.data['first name']}</div>
+					<div>${d.data.data['last name']}</div>
+					<div style="font-size:11px;opacity:0.7">${d.data.data.birthday || ''}</div>
+				</div>`
+		}
+	}
+
+	function classList(d) {
+		const c = []
+		if (d.data.data.gender === 'M') c.push('card-male')
+		else if (d.data.data.gender === 'F') c.push('card-female')
+		else c.push('card-genderless')
+		if (d.data.main) c.push('card-main')
+		return c
+	}
+
+	// --- Tìm kiếm ---
+
+	function setupSearch(data) {
+		const input = document.getElementById('search-input')
+		const dropdown = document.getElementById('search-dropdown')
+		const allPeople = data.map(d => ({
+			id: d.id,
+			label: ${d.data['first name']} ${d.data['last name']}.trim()
+		}))
+
+		input.addEventListener('input', () => {
+			const q = input.value.toLowerCase()
+			if (!q) {dropdown.classList.remove('active'); return}
+			const filtered = allPeople.filter(p => p.label.toLowerCase().includes(q))
+			dropdown.innerHTML = filtered.map(p =>
+				<div class="search-dropdown-item" data-id="${p.id}">${p.label}</div>
+			).join('')
+			dropdown.classList.toggle('active', filtered.length > 0)
+		})
+
+		dropdown.addEventListener('click', e => {
+			const item = e.target.closest('.search-dropdown-item')
+			if (!item) return
+			f3Chart.updateMainId(item.dataset.id)
+			f3Chart.updateTree({ initial: true })
+			input.value = ''
+			dropdown.classList.remove('active')
+		})
+
+		document.addEventListener('click', e => {
+			if (!e.target.closest('.header-actions')) dropdown.classList.remove('active')
+		})
+	}
+
+	// --- Xuất dữ liệu ---
+
+	function setupExport() {
+		document.getElementById('btn-export').addEventListener('click', () => {
+			const exported = f3EditTree.exportData()
+			const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' })
+			const url = URL.createObjectURL(blob)
+			const a = document.createElement('a')
+			a.href = url
+			a.download = 'family-data.json'
+			a.click()
+			URL.revokeObjectURL(url)
+			showToast('Đã xuất file family-data.json')
+		})
+	}
+
+	// --- Bật/tắt chế độ chỉnh sửa ---
+
+	function setupToggleEdit() {
+		const btn = document.getElementById('btn-toggle-edit')
+		btn.addEventListener('click', () => {
+			editMode = !editMode
+			if (editMode) {
+				f3EditTree.setEdit()
+				btn.textContent = 'Tắt chỉnh sửa'
+				btn.style.borderColor = '#e74c3c'
+				showToast('Đã bật chế độ chỉnh sửa')
+			} else {
+				f3EditTree.setNoEdit()
+				f3EditTree.closeForm()
+				btn.textContent = 'Bật chỉnh sửa'
+				btn.style.borderColor = 'rgba(255,255,255,0.3)'
+				showToast('Đã tắt chế độ chỉnh sửa')
+			}
+			f3Chart.updateTree({})
+		})
+	}
+
+	// --- Toast thông báo ---
+
+	function showToast(msg) {
+		const t = document.getElementById('toast')
+		t.textContent = msg
+		t.classList.add('show')
+		setTimeout(() => t.classList.remove('show'), 2000)
+	}
+})()
 </script>
 </body>
 </html>
