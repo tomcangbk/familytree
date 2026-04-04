@@ -109,6 +109,10 @@
     "rels": {
       "parents": [
         "77d60c68-084e-45a0-81c3-e170a16765b7"
+      ],
+      "children": [
+        "5bf1450a-51b2-434f-9797-1e636892c37a",
+        "3a0ae233-5b1d-41de-a255-85e38d7a4936"
       ]
     }
   },
@@ -124,6 +128,9 @@
     "rels": {
       "parents": [
         "e361cffc-0080-4fbc-957b-2c8b1145c9ff"
+      ],
+      "children": [
+        "6191e9b0-64ff-4a0f-b759-77cdb5235038"
       ]
     }
   },
@@ -183,6 +190,18 @@
       "parents": [
         "94476428-263e-4dfe-ac29-dd973302e2f1",
         "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "spouses": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836"
+      ],
+      "children": [
+        "598b89ac-ed42-4207-8263-d9d71b9f7393",
+        "fee11106-1f5b-44e2-93d8-0be41a463181",
+        "92fc430d-20ca-4618-902b-474f2e3cd6fb",
+        "92d4546c-ccc8-4821-bc5a-03eb70c25255",
+        "b037c4e6-23c8-4bd5-a2c3-b085dcd5d459",
+        "7a9cba3c-6931-443a-8d10-3829b98d8baa",
+        "6c7c5d5a-b3ef-4b08-afb3-b383a12afc26"
       ]
     }
   },
@@ -199,6 +218,14 @@
       "parents": [
         "94476428-263e-4dfe-ac29-dd973302e2f1",
         "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "spouses": [
+        "3b286020-55db-496f-b3c7-12689f0e0cd8"
+      ],
+      "children": [
+        "1718e039-e47a-4f82-9a53-d79c09d02b3b",
+        "7e127cd3-2f07-4231-8666-b1786ccd6fa2",
+        "fe4de0f9-b78d-4152-b4b0-9b00749ca797"
       ]
     }
   },
@@ -215,6 +242,14 @@
       "parents": [
         "94476428-263e-4dfe-ac29-dd973302e2f1",
         "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "spouses": [
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4"
+      ],
+      "children": [
+        "cb34e804-65a8-40bb-88c6-e97924747008",
+        "a5e45b9f-1e6d-4bd4-a8ce-62997a44a63f",
+        "7418ff83-e192-4249-a36a-553d07005d09"
       ]
     }
   },
@@ -278,6 +313,323 @@
     "rels": {
       "parents": [
         "1a051354-5153-4f60-97d9-bd513785f521"
+      ]
+    }
+  },
+  {
+    "id": "c1944d3f-36b9-424c-9389-83bc09d6c836",
+    "data": {
+      "gender": "F",
+      "first name": "Nguyễn Thị",
+      "last name": "Đán",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "598b89ac-ed42-4207-8263-d9d71b9f7393",
+        "fee11106-1f5b-44e2-93d8-0be41a463181",
+        "92fc430d-20ca-4618-902b-474f2e3cd6fb",
+        "92d4546c-ccc8-4821-bc5a-03eb70c25255",
+        "b037c4e6-23c8-4bd5-a2c3-b085dcd5d459",
+        "7a9cba3c-6931-443a-8d10-3829b98d8baa",
+        "6c7c5d5a-b3ef-4b08-afb3-b383a12afc26"
+      ],
+      "spouses": [
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "598b89ac-ed42-4207-8263-d9d71b9f7393",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Thư",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "c1944d3f-36b9-424c-9389-83bc09d6c836"
+      ]
+    }
+  },
+  {
+    "id": "fee11106-1f5b-44e2-93d8-0be41a463181",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Chư",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "c1944d3f-36b9-424c-9389-83bc09d6c836"
+      ]
+    }
+  },
+  {
+    "id": "92fc430d-20ca-4618-902b-474f2e3cd6fb",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Hồng",
+      "last name": "Hải",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "92d4546c-ccc8-4821-bc5a-03eb70c25255",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Dự",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "b037c4e6-23c8-4bd5-a2c3-b085dcd5d459",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Nhớn",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "7a9cba3c-6931-443a-8d10-3829b98d8baa",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Lường",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "6c7c5d5a-b3ef-4b08-afb3-b383a12afc26",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Văn",
+      "last name": "Riệu",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "3b286020-55db-496f-b3c7-12689f0e0cd8",
+    "data": {
+      "gender": "F",
+      "first name": "Nguyễn Thị",
+      "last name": "Đợt(Lợt)",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "1718e039-e47a-4f82-9a53-d79c09d02b3b",
+        "7e127cd3-2f07-4231-8666-b1786ccd6fa2",
+        "fe4de0f9-b78d-4152-b4b0-9b00749ca797"
+      ],
+      "spouses": [
+        "e7fb5991-5556-40af-a788-813e248cea07"
+      ]
+    }
+  },
+  {
+    "id": "1718e039-e47a-4f82-9a53-d79c09d02b3b",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Chức",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "3b286020-55db-496f-b3c7-12689f0e0cd8"
+      ]
+    }
+  },
+  {
+    "id": "7e127cd3-2f07-4231-8666-b1786ccd6fa2",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khước",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "3b286020-55db-496f-b3c7-12689f0e0cd8"
+      ]
+    }
+  },
+  {
+    "id": "fe4de0f9-b78d-4152-b4b0-9b00749ca797",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Khướt",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "3b286020-55db-496f-b3c7-12689f0e0cd8",
+        "e7fb5991-5556-40af-a788-813e248cea07"
+      ]
+    }
+  },
+  {
+    "id": "2d9477fc-84d3-4d43-835c-b16ff6375da4",
+    "data": {
+      "gender": "F",
+      "first name": "Tống Thị",
+      "last name": "Ngần",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "cb34e804-65a8-40bb-88c6-e97924747008",
+        "a5e45b9f-1e6d-4bd4-a8ce-62997a44a63f",
+        "7418ff83-e192-4249-a36a-553d07005d09"
+      ],
+      "spouses": [
+        "42b8395b-c359-456e-aacd-d2180dbf8798"
+      ]
+    }
+  },
+  {
+    "id": "cb34e804-65a8-40bb-88c6-e97924747008",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Cậc",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4"
+      ]
+    }
+  },
+  {
+    "id": "a5e45b9f-1e6d-4bd4-a8ce-62997a44a63f",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Thông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4"
+      ]
+    }
+  },
+  {
+    "id": "7418ff83-e192-4249-a36a-553d07005d09",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Văn",
+      "last name": "Nhông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4",
+        "42b8395b-c359-456e-aacd-d2180dbf8798"
+      ]
+    }
+  },
+  {
+    "id": "5bf1450a-51b2-434f-9797-1e636892c37a",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khường",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ]
+    }
+  },
+  {
+    "id": "3a0ae233-5b1d-41de-a255-85e38d7a4936",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Uần",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ]
+    }
+  },
+  {
+    "id": "6191e9b0-64ff-4a0f-b759-77cdb5235038",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Gác",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "ec21804a-d313-410b-b640-c1bb6a51d018"
       ]
     }
   }
