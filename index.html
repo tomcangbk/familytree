@@ -1,259 +1,636 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Gia Phả</title>
-	<script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
-	<link rel="stylesheet" href="https://unpkg.com/family-chart@0.9.0/dist/styles/family-chart.css">
-	<script src="https://unpkg.com/family-chart@0.9.0/dist/family-chart.min.js"></script>
-	<style>
-		* { margin: 0; padding: 0; box-sizing: border-box; }
-		body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; }
-
-		.header {
-			display: flex; align-items: center; justify-content: space-between;
-			padding: 10px 20px; background: rgba(0,0,0,0.4); color: #fff; z-index: 100; position: relative;
-		}
-		.header h1 { font-size: 20px; font-weight: 600; }
-		.header-actions { display: flex; gap: 8px; align-items: center; }
-		.header-actions button {
-			padding: 6px 14px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
-			background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; font-size: 13px;
-			transition: background 0.2s;
-		}
-		.header-actions button:hover { background: rgba(255,255,255,0.25); }
-		.search-box {
-			padding: 6px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
-			background: rgba(255,255,255,0.1); color: #fff; font-size: 13px; width: 200px; outline: none;
-		}
-		.search-box::placeholder { color: rgba(255,255,255,0.5); }
-		.search-dropdown {
-			position: absolute; top: 100%; right: 20px; width: 250px;
-			max-height: 300px; overflow-y: auto; background: #16213e; border-radius: 0 0 8px 8px;
-			box-shadow: 0 8px 20px rgba(0,0,0,0.5); z-index: 200; display: none;
-		}
-		.search-dropdown.active { display: block; }
-		.search-dropdown-item {
-			padding: 8px 14px; cursor: pointer; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1);
-			font-size: 13px; transition: background 0.15s;
-		}
-		.search-dropdown-item:hover {background: rgba(255,255,255,0.1)}
-		
-		.f3 div.card { cursor: pointer; pointer-events: auto; color: #fff; position: relative; }
-		.f3 div.card-image {
-			border-radius: 50%; padding: 4px; width: 90px; height: 90px; transition: transform 0.2s;
-		}
-		.f3 div.card:hover .card-image { transform: scale(1.1); }
-		.f3 div.card-image img {
-			width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-		}
-		.f3 div.card-image .card-label {
-			position: absolute; bottom: -10px; left: 50%; transform: translate(-50%, 50%);
-			max-width: 160%; height: 22px; text-align: center; background: rgba(0,0,0,0.6);
-			overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-			border-radius: 4px; padding: 0 8px; font-size: 12px; line-height: 22px;
-		}
-		.f3 div.card-text {
-			padding: 8px; border-radius: 6px; width: 120px; height: 70px;
-			overflow: hidden; line-height: 1.3; text-align: center; transition: transform 0.2s;
-		}
-		.f3 div.card:hover .card-text { transform: scale(1.1); }
-		.f3 div.card-female { background-color: #c48a92; }
-		.f3 div.card-male { background-color: #789fac; }
-		.f3 div.card-genderless { background-color: #999; }
-		.f3 div.card-main { transform: scale(1.15) !important; box-shadow: 0 0 25px rgba(0,0,0,0.6); }
-
-		.toast {
-			position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;
-			background: #27ae60; color: #fff; border-radius: 8px; font-size: 14px;
-			opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none;
-		}
-		.toast.show { opacity: 1; }
-	</style>
-</head>
-<body>
-
-<div class="header">
-    <h1>Gia Phả Gia Đình</h1>
-    <div class="header-actions">
-		<button id="btn-export">Xuất dữ liệu</button>
-		<button id="btn-toggle-edit">Bật chỉnh sửa</button>
-		<input class="search-box" id="search-input" type="text" placeholder="Tìm thành viên...">
-		<div class="search-dropdown" id="search-dropdown"></div>
-	</div>
-</div>
-
-<div id="FamilyChart" class="f3"
-     style="width:100%;height:calc(100vh - 50px);background-color:#1a1a2e;color:#fff;">
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-(function() {
-    let editMode = false
-    let f3Chart, f3Card, f3EditTree
-
-    fetch('./data.json')
-        .then(r => r.json())
-        .then(data => create(data))
-        .catch(err => console.error('Lỗi load data:', err))
-
-    function create(data) {
-        f3Chart = f3.createChart('#FamilyChart', data)
-            .setTransitionTime(1000)
-            .setCardXSpacing(180)
-            .setCardYSpacing(150)
-
-        f3Card = f3Chart.setCardHtml()
-            .setOnCardUpdate(cardRenderer())
-
-        f3EditTree = f3Chart.editTree()
-            .setFields(["first name", "last name", "birthday", "avatar"])
-            .setEditFirst(true)
-            .setCardClickOpen(f3Card)
-            .setNoEdit()
-			.setOnChange(() => {
-				showToast('Đã cập nhật')
-			})
-
-		f3Chart.updateTree({ initial: true })
-
-		setupSearch(data)
-		setupExport()
-		setupToggleEdit()
-	}
-
-	// --- Card renderer: ảnh tròn + tên bên dưới ---
-
-	function cardRenderer() {
-		return function(d) {
-			const card = this.querySelector('.card')
-			card.outerHTML = `
-				<div class="card" style="transform: translate(-50%, -50%);">
-					${d.data.data.avatar ? cardImage(d) : cardText(d)}
-				</div>`
-			this.addEventListener('click', e => onCardClick(e, d))
-	}
-
-		function onCardClick(e, d) {
-			if (editMode) {
-				f3EditTree.open(d.data)
-				if (f3EditTree.isAddingRelative()) return
-				if (f3EditTree.isRemovingRelative()) return
-			}
-			f3Card.onCardClickDefault(e, d)
-		}
-
-		function cardImage(d) {
-			return `
-				<div class="card-image ${classList(d).join(' ')}">
-					<img src="${d.data.data.avatar}" onerror="this.style.display='none'">
-					<div class="card-label">${d.data.data['first name']} ${d.data.data['last name']}</div>
-				</div>`
-		}
-
-		function cardText(d) {
-			return `
-				<div class="card-text ${classList(d).join(' ')}">
-					<div>${d.data.data['first name'] || 'Không rõ'}</div>
-					<div>${d.data.data['last name'] || ''}</div>
-					<div style="font-size:11px;opacity:0.7">${d.data.data.birthday || ''}</div>
-				</div>`
-		}
-	}
-
-	function classList(d) {
-		const c = []
-		if (d.data.data.gender === 'M') c.push('card-male')
-		else if (d.data.data.gender === 'F') c.push('card-female')
-		else c.push('card-genderless')
-		if (d.data.main) c.push('card-main')
-		return c
-	}
-
-	// --- Tìm kiếm ---
-
-	function setupSearch(data) {
-		const input = document.getElementById('search-input')
-		const dropdown = document.getElementById('search-dropdown')
-		const allPeople = data.map(d => ({
-			id: d.id,
-			label: `${d.data['first name']} ${d.data['last name']}`.trim()
-		}))
-
-		input.addEventListener('input', () => {
-			const q = input.value.toLowerCase()
-			if (!q) {dropdown.classList.remove('active'); return}
-			const filtered = allPeople.filter(p => p.label.toLowerCase().includes(q))
-			dropdown.innerHTML = filtered.map(p =>
-				`<div class="search-dropdown-item" data-id="${p.id}">${p.label}</div>`
-			).join('')
-			dropdown.classList.toggle('active', filtered.length > 0)
-		})
-
-		dropdown.addEventListener('click', e => {
-			const item = e.target.closest('.search-dropdown-item')
-			if (!item) return
-			f3Chart.updateMainId(item.dataset.id)
-			f3Chart.updateTree({ initial: true })
-			input.value = ''
-			dropdown.classList.remove('active')
-		})
-
-		document.addEventListener('click', e => {
-			if (!e.target.closest('.header-actions')) dropdown.classList.remove('active')
-		})
-	}
-
-	// --- Xuất dữ liệu ---
-
-	function setupExport() {
-		document.getElementById('btn-export').addEventListener('click', () => {
-			const exported = f3EditTree.exportData()
-			const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' })
-			const url = URL.createObjectURL(blob)
-			const a = document.createElement('a')
-			a.href = url
-			a.download = 'family-data.json'
-			a.click()
-			URL.revokeObjectURL(url)
-			showToast('Đã xuất file family-data.json')
-		})
-	}
-
-	// --- Bật/tắt chế độ chỉnh sửa ---
-
-	function setupToggleEdit() {
-		const btn = document.getElementById('btn-toggle-edit')
-		btn.addEventListener('click', () => {
-			editMode = !editMode
-			if (editMode) {
-				f3EditTree.setEdit()
-				btn.textContent = 'Tắt chỉnh sửa'
-				btn.style.borderColor = '#e74c3c'
-				showToast('Đã bật chế độ chỉnh sửa')
-			} else {
-				f3EditTree.setNoEdit()
-				f3EditTree.closeForm()
-				btn.textContent = 'Bật chỉnh sửa'
-				btn.style.borderColor = 'rgba(255,255,255,0.3)'
-				showToast('Đã tắt chế độ chỉnh sửa')
-			}
-			f3Chart.updateTree({})
-		})
-	}
-
-	// --- Toast thông báo ---
-
-	function showToast(msg) {
-		const t = document.getElementById('toast')
-		t.textContent = msg
-		t.classList.add('show')
-		setTimeout(() => t.classList.remove('show'), 2000)
-	}
-})()
-</script>
-</body>
-</html>
+[
+  {
+    "id": "0",
+    "rels": {
+      "parents": [
+        "ed946723-bd47-4a3d-8f25-81ecc9fd07a1"
+      ],
+      "children": [
+        "77d60c68-084e-45a0-81c3-e170a16765b7",
+        "e361cffc-0080-4fbc-957b-2c8b1145c9ff"
+      ]
+    },
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Đình Trọng",
+      "birthday": "",
+      "avatar": ""
+    }
+  },
+  {
+    "id": "ed946723-bd47-4a3d-8f25-81ecc9fd07a1",
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Quốc Cơ",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "0"
+      ]
+    }
+  },
+  {
+    "id": "77d60c68-084e-45a0-81c3-e170a16765b7",
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Văn Lai",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "0"
+      ],
+      "children": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ]
+    }
+  },
+  {
+    "id": "e361cffc-0080-4fbc-957b-2c8b1145c9ff",
+    "data": {
+      "gender": "M",
+      "first name": "Phan",
+      "last name": "Văn Ri",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "0"
+      ],
+      "children": [
+        "ec21804a-d313-410b-b640-c1bb6a51d018"
+      ]
+    }
+  },
+  {
+    "id": "94476428-263e-4dfe-ac29-dd973302e2f1",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn ",
+      "last name": "Hương",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "77d60c68-084e-45a0-81c3-e170a16765b7"
+      ],
+      "children": [
+        "1a051354-5153-4f60-97d9-bd513785f521",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
+        "8550e8c0-d73b-44f7-a64c-281aae55d92d",
+        "4bedafc7-73fd-4b57-8e5c-4c0859ab552e"
+      ],
+      "spouses": [
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "44e7c3b3-e201-4856-968c-f453fecaec2b",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khương",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "77d60c68-084e-45a0-81c3-e170a16765b7"
+      ],
+      "children": [
+        "5bf1450a-51b2-434f-9797-1e636892c37a",
+        "3a0ae233-5b1d-41de-a255-85e38d7a4936"
+      ]
+    }
+  },
+  {
+    "id": "ec21804a-d313-410b-b640-c1bb6a51d018",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Rư",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "e361cffc-0080-4fbc-957b-2c8b1145c9ff"
+      ],
+      "children": [
+        "6191e9b0-64ff-4a0f-b759-77cdb5235038"
+      ]
+    }
+  },
+  {
+    "id": "518cfbb3-77c6-4f0d-951c-52bbea4a338d",
+    "data": {
+      "gender": "F",
+      "first name": "Nguyễn Thị",
+      "last name": "Rườm",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "1a051354-5153-4f60-97d9-bd513785f521",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
+        "8550e8c0-d73b-44f7-a64c-281aae55d92d",
+        "4bedafc7-73fd-4b57-8e5c-4c0859ab552e"
+      ],
+      "spouses": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1"
+      ]
+    }
+  },
+  {
+    "id": "1a051354-5153-4f60-97d9-bd513785f521",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Đình",
+      "last name": "Trầu",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "children": [
+        "ef6f4bee-91df-4f34-9cdf-bebce2b7a710"
+      ]
+    }
+  },
+  {
+    "id": "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Xạ",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "spouses": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836"
+      ],
+      "children": [
+        "598b89ac-ed42-4207-8263-d9d71b9f7393",
+        "fee11106-1f5b-44e2-93d8-0be41a463181",
+        "92fc430d-20ca-4618-902b-474f2e3cd6fb",
+        "92d4546c-ccc8-4821-bc5a-03eb70c25255",
+        "b037c4e6-23c8-4bd5-a2c3-b085dcd5d459",
+        "7a9cba3c-6931-443a-8d10-3829b98d8baa",
+        "6c7c5d5a-b3ef-4b08-afb3-b383a12afc26"
+      ]
+    }
+  },
+  {
+    "id": "e7fb5991-5556-40af-a788-813e248cea07",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khức",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "spouses": [
+        "3b286020-55db-496f-b3c7-12689f0e0cd8"
+      ],
+      "children": [
+        "1718e039-e47a-4f82-9a53-d79c09d02b3b",
+        "7e127cd3-2f07-4231-8666-b1786ccd6fa2",
+        "fe4de0f9-b78d-4152-b4b0-9b00749ca797"
+      ]
+    }
+  },
+  {
+    "id": "42b8395b-c359-456e-aacd-d2180dbf8798",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khực",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ],
+      "spouses": [
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4"
+      ],
+      "children": [
+        "cb34e804-65a8-40bb-88c6-e97924747008",
+        "a5e45b9f-1e6d-4bd4-a8ce-62997a44a63f",
+        "7418ff83-e192-4249-a36a-553d07005d09"
+      ]
+    }
+  },
+  {
+    "id": "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Thông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "8550e8c0-d73b-44f7-a64c-281aae55d92d",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Nhông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d",
+        "94476428-263e-4dfe-ac29-dd973302e2f1"
+      ]
+    }
+  },
+  {
+    "id": "4bedafc7-73fd-4b57-8e5c-4c0859ab552e",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Uần",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "94476428-263e-4dfe-ac29-dd973302e2f1",
+        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
+      ]
+    }
+  },
+  {
+    "id": "ef6f4bee-91df-4f34-9cdf-bebce2b7a710",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Vàng",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "1a051354-5153-4f60-97d9-bd513785f521"
+      ]
+    }
+  },
+  {
+    "id": "c1944d3f-36b9-424c-9389-83bc09d6c836",
+    "data": {
+      "gender": "F",
+      "first name": "Nguyễn Thị",
+      "last name": "Đán",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "598b89ac-ed42-4207-8263-d9d71b9f7393",
+        "fee11106-1f5b-44e2-93d8-0be41a463181",
+        "92fc430d-20ca-4618-902b-474f2e3cd6fb",
+        "92d4546c-ccc8-4821-bc5a-03eb70c25255",
+        "b037c4e6-23c8-4bd5-a2c3-b085dcd5d459",
+        "7a9cba3c-6931-443a-8d10-3829b98d8baa",
+        "6c7c5d5a-b3ef-4b08-afb3-b383a12afc26"
+      ],
+      "spouses": [
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "598b89ac-ed42-4207-8263-d9d71b9f7393",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Thư",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "c1944d3f-36b9-424c-9389-83bc09d6c836"
+      ]
+    }
+  },
+  {
+    "id": "fee11106-1f5b-44e2-93d8-0be41a463181",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Chư",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf",
+        "c1944d3f-36b9-424c-9389-83bc09d6c836"
+      ]
+    }
+  },
+  {
+    "id": "92fc430d-20ca-4618-902b-474f2e3cd6fb",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Hồng",
+      "last name": "Hải",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "92d4546c-ccc8-4821-bc5a-03eb70c25255",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Dự",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "b037c4e6-23c8-4bd5-a2c3-b085dcd5d459",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Nhớn",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "7a9cba3c-6931-443a-8d10-3829b98d8baa",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Lường",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "6c7c5d5a-b3ef-4b08-afb3-b383a12afc26",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Văn",
+      "last name": "Riệu",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "c1944d3f-36b9-424c-9389-83bc09d6c836",
+        "265a81cf-c695-4b25-bb24-dd47a96fbedf"
+      ]
+    }
+  },
+  {
+    "id": "3b286020-55db-496f-b3c7-12689f0e0cd8",
+    "data": {
+      "gender": "F",
+      "first name": "Nguyễn Thị",
+      "last name": "Đợt(Lợt)",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "1718e039-e47a-4f82-9a53-d79c09d02b3b",
+        "7e127cd3-2f07-4231-8666-b1786ccd6fa2",
+        "fe4de0f9-b78d-4152-b4b0-9b00749ca797"
+      ],
+      "spouses": [
+        "e7fb5991-5556-40af-a788-813e248cea07"
+      ]
+    }
+  },
+  {
+    "id": "1718e039-e47a-4f82-9a53-d79c09d02b3b",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Chức",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "3b286020-55db-496f-b3c7-12689f0e0cd8"
+      ]
+    }
+  },
+  {
+    "id": "7e127cd3-2f07-4231-8666-b1786ccd6fa2",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khước",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "e7fb5991-5556-40af-a788-813e248cea07",
+        "3b286020-55db-496f-b3c7-12689f0e0cd8"
+      ]
+    }
+  },
+  {
+    "id": "fe4de0f9-b78d-4152-b4b0-9b00749ca797",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Khướt",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "3b286020-55db-496f-b3c7-12689f0e0cd8",
+        "e7fb5991-5556-40af-a788-813e248cea07"
+      ]
+    }
+  },
+  {
+    "id": "2d9477fc-84d3-4d43-835c-b16ff6375da4",
+    "data": {
+      "gender": "F",
+      "first name": "Tống Thị",
+      "last name": "Ngần",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "cb34e804-65a8-40bb-88c6-e97924747008",
+        "a5e45b9f-1e6d-4bd4-a8ce-62997a44a63f",
+        "7418ff83-e192-4249-a36a-553d07005d09"
+      ],
+      "spouses": [
+        "42b8395b-c359-456e-aacd-d2180dbf8798"
+      ]
+    }
+  },
+  {
+    "id": "cb34e804-65a8-40bb-88c6-e97924747008",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Cậc",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4"
+      ]
+    }
+  },
+  {
+    "id": "a5e45b9f-1e6d-4bd4-a8ce-62997a44a63f",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Thông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "42b8395b-c359-456e-aacd-d2180dbf8798",
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4"
+      ]
+    }
+  },
+  {
+    "id": "7418ff83-e192-4249-a36a-553d07005d09",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Văn",
+      "last name": "Nhông",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "2d9477fc-84d3-4d43-835c-b16ff6375da4",
+        "42b8395b-c359-456e-aacd-d2180dbf8798"
+      ]
+    }
+  },
+  {
+    "id": "5bf1450a-51b2-434f-9797-1e636892c37a",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khường",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ]
+    }
+  },
+  {
+    "id": "3a0ae233-5b1d-41de-a255-85e38d7a4936",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Uần",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ]
+    }
+  },
+  {
+    "id": "6191e9b0-64ff-4a0f-b759-77cdb5235038",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Gác",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "ec21804a-d313-410b-b640-c1bb6a51d018"
+      ]
+    }
+  }
+]
