@@ -89,8 +89,7 @@
         "e7fb5991-5556-40af-a788-813e248cea07",
         "42b8395b-c359-456e-aacd-d2180dbf8798",
         "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
-        "8550e8c0-d73b-44f7-a64c-281aae55d92d",
-        "4bedafc7-73fd-4b57-8e5c-4c0859ab552e"
+        "8550e8c0-d73b-44f7-a64c-281aae55d92d"
       ],
       "spouses": [
         "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
@@ -150,8 +149,7 @@
         "e7fb5991-5556-40af-a788-813e248cea07",
         "42b8395b-c359-456e-aacd-d2180dbf8798",
         "d41d0f16-3362-4d5b-9f8a-7f0a6652b3e9",
-        "8550e8c0-d73b-44f7-a64c-281aae55d92d",
-        "4bedafc7-73fd-4b57-8e5c-4c0859ab552e"
+        "8550e8c0-d73b-44f7-a64c-281aae55d92d"
       ],
       "spouses": [
         "94476428-263e-4dfe-ac29-dd973302e2f1"
@@ -284,22 +282,6 @@
       "parents": [
         "518cfbb3-77c6-4f0d-951c-52bbea4a338d",
         "94476428-263e-4dfe-ac29-dd973302e2f1"
-      ]
-    }
-  },
-  {
-    "id": "4bedafc7-73fd-4b57-8e5c-4c0859ab552e",
-    "data": {
-      "gender": "M",
-      "first name": "Phan Văn",
-      "last name": "Uần",
-      "birthday": "",
-      "avatar": ""
-    },
-    "rels": {
-      "parents": [
-        "94476428-263e-4dfe-ac29-dd973302e2f1",
-        "518cfbb3-77c6-4f0d-951c-52bbea4a338d"
       ]
     }
   },
@@ -572,6 +554,10 @@
     "rels": {
       "parents": [
         "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ],
+      "children": [
+        "2b1c046b-cacf-481d-8339-39576c010011",
+        "d5d8aa99-d3ec-481e-af67-b7fe8fbda9b3"
       ]
     }
   },
@@ -587,6 +573,14 @@
     "rels": {
       "parents": [
         "44e7c3b3-e201-4856-968c-f453fecaec2b"
+      ],
+      "children": [
+        "319560d5-73e4-4f5f-9fe7-ae6728ff9807",
+        "15c26df0-6e11-4d46-ac57-09da928fa50c",
+        "c7e1744e-5314-4839-a00e-a075a0ef523c"
+      ],
+      "spouses": [
+        "829bec6a-1e2a-4922-a0d5-f5ea034ddefc"
       ]
     }
   },
@@ -666,6 +660,104 @@
       "parents": [
         "2d9477fc-84d3-4d43-835c-b16ff6375da4",
         "42b8395b-c359-456e-aacd-d2180dbf8798"
+      ]
+    }
+  },
+  {
+    "id": "2b1c046b-cacf-481d-8339-39576c010011",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Khang",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "5bf1450a-51b2-434f-9797-1e636892c37a"
+      ]
+    }
+  },
+  {
+    "id": "d5d8aa99-d3ec-481e-af67-b7fe8fbda9b3",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Nhường",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "5bf1450a-51b2-434f-9797-1e636892c37a"
+      ]
+    }
+  },
+  {
+    "id": "829bec6a-1e2a-4922-a0d5-f5ea034ddefc",
+    "data": {
+      "gender": "F",
+      "first name": "Nguyễn Thị",
+      "last name": "Kê",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "children": [
+        "319560d5-73e4-4f5f-9fe7-ae6728ff9807",
+        "15c26df0-6e11-4d46-ac57-09da928fa50c",
+        "c7e1744e-5314-4839-a00e-a075a0ef523c"
+      ],
+      "spouses": [
+        "3a0ae233-5b1d-41de-a255-85e38d7a4936"
+      ]
+    }
+  },
+  {
+    "id": "319560d5-73e4-4f5f-9fe7-ae6728ff9807",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Nhuận",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "3a0ae233-5b1d-41de-a255-85e38d7a4936",
+        "829bec6a-1e2a-4922-a0d5-f5ea034ddefc"
+      ]
+    }
+  },
+  {
+    "id": "15c26df0-6e11-4d46-ac57-09da928fa50c",
+    "data": {
+      "gender": "M",
+      "first name": "Phan Văn",
+      "last name": "Luận",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "3a0ae233-5b1d-41de-a255-85e38d7a4936",
+        "829bec6a-1e2a-4922-a0d5-f5ea034ddefc"
+      ]
+    }
+  },
+  {
+    "id": "c7e1744e-5314-4839-a00e-a075a0ef523c",
+    "data": {
+      "gender": "F",
+      "first name": "Phan Thị",
+      "last name": "Gái",
+      "birthday": "",
+      "avatar": ""
+    },
+    "rels": {
+      "parents": [
+        "829bec6a-1e2a-4922-a0d5-f5ea034ddefc",
+        "3a0ae233-5b1d-41de-a255-85e38d7a4936"
       ]
     }
   }
